@@ -13,7 +13,7 @@ AsyncWebServer server(80);
 void setup() {
   // -----------------------------------------------------Serial
   Serial.begin(115200);
-  while(!serial){
+  while(!Serial){
     Serial.println("\n");
   }
   // -----------------------------------------------------GPIO
@@ -26,7 +26,7 @@ void setup() {
     while(1){}
   }
 
-  File root = LittleFS.open("/");
+  File root = LittleFS.open("/", "r");
   File file = root.openNextFile();
   while(file){
     Serial.print("File: ");
@@ -35,32 +35,32 @@ void setup() {
     file = root.openNextFile();
   }
   // -----------------------------------------------------Wifi
-  Wifi.begin(ssid, password);
+  WiFi.begin(ssid, password);
   Serial.println("connexion wifi start ...");
-  while(!Wifi.isConnected()){
+  while(!WiFi.isConnected()){
     Serial.print(".");
     delay(500);
   }
   Serial.println("\nconnexion wifi ok");
   Serial.println("IP: ");
-  Serial.println(Wifi.localIP());
+  Serial.println(WiFi.localIP());
 
   // -----------------------------------------------------Server
   server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
-    request->send(SPIFFS, "/index.html", "text/html");
+    request->send(LittleFS, "/index.html", "text/html");
   });
   server.on("/W3-style.css", HTTP_GET, [](AsyncWebServerRequest *request){
-    request->send(SPIFFS, "/W3-style.css", "text/css");
+    request->send(LittleFS, "/W3-style.css", "text/css");
   });
   server.on("/main.js", HTTP_GET, [](AsyncWebServerRequest *request){
-    request->send(SPIFFS, "/main.js", "text/javascript");
+    request->send(LittleFS, "/main.js", "text/javascript");
   });
   server.on("/style.css", HTTP_GET, [](AsyncWebServerRequest *request){
-    request->send(SPIFFS, "/style.css", "text/css");
+    request->send(LittleFS, "/style.css", "text/css");
   });
   server.on("/brightness", HTTP_GET, [](AsyncWebServerRequest *request){
-    int val analogRead(brightness);
-    String brightness = String(val)
+    int val = analogRead(brightness);
+    String brightness = String(val);
     request->send(200,  "text/plain", brightness);
   });
   server.on("/on", HTTP_GET, [](AsyncWebServerRequest *request){
