@@ -1,12 +1,12 @@
 #include <Arduino.h>
 #include <ESPAsyncWebServer.h>
-#include <littleFS.h>
+#include <LittleFS.h>
 
-const char *ssid = "HommeInternetBox";
-const char *password = "***********";
+const char *ssid = "Freebox-507C72";
+const char *password = "enzo@1974";
 
 const int led = 2;
-const int brightness = 0;
+const int brightness = 34;
 
 AsyncWebServer server(80);
 
@@ -28,6 +28,7 @@ void setup() {
 
   File root = LittleFS.open("/", "r");
   File file = root.openNextFile();
+
   while(file){
     Serial.print("File: ");
     Serial.println(file.name());
@@ -37,11 +38,13 @@ void setup() {
   // -----------------------------------------------------Wifi
   WiFi.begin(ssid, password);
   Serial.println("connexion wifi start ...");
-  while(!WiFi.isConnected()){
+
+  while(WiFi.status() != WL_CONNECTED){
     Serial.print(".");
     delay(500);
   }
-  Serial.println("\nconnexion wifi ok");
+
+  Serial.println("\n connexion wifi ok");
   Serial.println("IP: ");
   Serial.println(WiFi.localIP());
 
@@ -54,9 +57,6 @@ void setup() {
   });
   server.on("/main.js", HTTP_GET, [](AsyncWebServerRequest *request){
     request->send(LittleFS, "/main.js", "text/javascript");
-  });
-  server.on("/style.css", HTTP_GET, [](AsyncWebServerRequest *request){
-    request->send(LittleFS, "/style.css", "text/css");
   });
   server.on("/brightness", HTTP_GET, [](AsyncWebServerRequest *request){
     int val = analogRead(brightness);
