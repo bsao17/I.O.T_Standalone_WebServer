@@ -2,8 +2,8 @@
 #include <ESPAsyncWebServer.h>
 #include <LittleFS.h>
 
-const char *ssid = "Freebox-507C72";
-const char *password = "enzo@1974";
+const char *ssid = "*********";
+const char *password = "*********";
 
 const int led = 2;
 const int brightness = 34;
