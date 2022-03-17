@@ -2,8 +2,8 @@
 #include <ESPAsyncWebServer.h>
 #include <LittleFS.h>
 
-const char *ssid = "*********";
-const char *password = "*********";
+const char *ssid = "**********";
+const char *password = "**********";
 
 const int led = 2;
 const int brightness = 34;
