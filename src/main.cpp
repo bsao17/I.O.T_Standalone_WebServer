@@ -1,9 +1,12 @@
 #include <Arduino.h>
 #include <ESPAsyncWebServer.h>
 #include <LittleFS.h>
+#include <FS.h>
 
-const char *ssid = "**********";
-const char *password = "**********";
+#define USE_LittleFS
+
+const char *ssid = "***********";
+const char *password = "********";
 
 const int led = 2;
 const int brightness = 34;
@@ -55,11 +58,11 @@ void setup()
 
   // -----------------------------------------------------Server
   server.on("/", HTTP_GET, [](AsyncWebServerRequest *request)
-            { request->send(LittleFS, "/index.html", "text/html"); });
+            { request->send(LittleFS, "./data/index.html", "text/html"); });
   server.on("/W3-style.css", HTTP_GET, [](AsyncWebServerRequest *request)
-            { request->send(LittleFS, "/W3-style.css", "text/css"); });
+            { request->send(LittleFS, "./data/W3-style.css", "text/css"); });
   server.on("/main.js", HTTP_GET, [](AsyncWebServerRequest *request)
-            { request->send(LittleFS, "/main.js", "text/javascript"); });
+            { request->send(LittleFS, "./data/main.js", "text/javascript"); });
   server.on("/brightness", HTTP_GET, [](AsyncWebServerRequest *request)
             {
     int val = analogRead(brightness);
