@@ -26,9 +26,7 @@ void setup()
   if (!LittleFS.begin())
   {
     Serial.println("LittleFS Mount Failed");
-    while (1)
-    {
-    }
+    return;
   }
 
   File root = LittleFS.open("/", "r");
